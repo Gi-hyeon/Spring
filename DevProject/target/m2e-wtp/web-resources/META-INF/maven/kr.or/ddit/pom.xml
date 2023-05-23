@@ -110,21 +110,21 @@
 		</dependency>
 		
 		<!-- json 데이터 바인딩을 위한 의존 라이브러리 -->
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.9.5</version>
-		</dependency> -->
+		</dependency>
 		
 		<!-- 
 			xml 데이터 바인딩을 위한 의존 라이브러리
 			xml 테스트를 위한 라이브러리이다.
 		 -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-xml</artifactId>
 			<version>2.9.5</version>
-		</dependency>
+		</dependency> -->
 		
 		<!-- 
 			1) 자바빈 클래스(VO)의 getter/setter 메서드, toString 자동처리
@@ -135,6 +135,13 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.22</version>
 			<scope>provided</scope>
+		</dependency>
+		
+		<!-- 파일을 처리하기 위한 라이브러리 의존 관계 정의 -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
 		</dependency>
 		
 		<!-- Test -->
