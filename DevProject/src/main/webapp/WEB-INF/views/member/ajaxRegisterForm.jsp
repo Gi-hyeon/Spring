@@ -110,7 +110,7 @@ $(function() {
 		var password = $('#password').val();
 		var userObject = {
 				userId : userId,
-				passWord : password
+				password : password
 		}
 		
 		$.ajax({
@@ -132,7 +132,7 @@ $(function() {
 		var password = $('#password').val();
 		var userObject = {
 				userId : userId,
-				passWord : password
+				password : password
 		}
 		
 		$.ajax({
@@ -154,7 +154,7 @@ $(function() {
 		var password = $('#password').val();
 		var userObject = {
 				userId : userId,
-				passWord : password
+				password : password
 		}
 		
 		$.ajax({
@@ -174,8 +174,8 @@ $(function() {
 	// 7) 객체 배열 타입의 JSON 요청 데이터를 자바빈즈 요소를 가진 리스트 컬렉션 매개변수에 @RequestBody 어노테이션을 지정하여 처리한다.
 	$('#registerBtn07').on('click', function() {
 		var userObjectArray = [
-			{userId : "name01", passWord : "pw1"},
-			{userId : "name02", passWord : "pw2"}
+			{userId : "name01", password : "pw1"},
+			{userId : "name02", password : "pw2"}
 		];
 		
 		$.ajax({
@@ -198,7 +198,7 @@ $(function() {
 		var password = $('#password').val();
 		var userObject = {
 				userId : userId,
-				passWord : password,
+				password : password,
 				address : {
 					postCode : "010908",
 					location : "Daejeon"
@@ -226,7 +226,7 @@ $(function() {
 		var password = $('#password').val();
 		var userObject = {
 				userId : userId,
-				passWord : password,
+				password : password,
 				cardList : [
 					{no : "12345", validMonth : "20221018"},
 					{no : "56789", validMonth : "20221019"}

@@ -156,7 +156,7 @@ public class HomeController {
 		list.add(member);
 		Member member2 = new Member();
 		member2.setUserName("kim1111");
-		member2.setPassWord("4321");
+		member2.setPassword("4321");
 		list.add(member2);
 		return list;
 	}

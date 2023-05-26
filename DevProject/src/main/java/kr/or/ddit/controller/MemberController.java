@@ -186,7 +186,7 @@ public class MemberController {
 	public String registerJavaBeans01(Member member) {
 		log.info("registerJavaBeans01() 실행!!!");
 		log.info("member.userId : " + member.getUserId());
-		log.info("member.password : " + member.getPassWord());
+		log.info("member.password : " + member.getPassword());
 		log.info("member.coin : " + member.getCoin());
 		return "success";
 	}
@@ -196,7 +196,7 @@ public class MemberController {
 	public String registerJavaBeans02(Member member, int coin) {
 		log.info("registerJavaBeans02() 실행!!!");
 		log.info("member.userId : " + member.getUserId());
-		log.info("member.password : " + member.getPassWord());
+		log.info("member.password : " + member.getPassword());
 		log.info("member.coin : " + member.getCoin());
 		log.info("coin : " + coin);
 		return "success";
@@ -208,7 +208,7 @@ public class MemberController {
 		log.info("registerJavaBeans03() 실행!!!");
 		log.info("uid : " + uid);
 		log.info("member.userId : " + member.getUserId());
-		log.info("member.password : " + member.getPassWord());
+		log.info("member.password : " + member.getPassword());
 		log.info("member.coin : " + member.getCoin());
 		return "success";
 	}
@@ -239,7 +239,7 @@ public class MemberController {
 	public String register(Member member) {
 		log.info("register() 실행!!!");
 		log.info("member.userId : " + member.getUserId());
-		log.info("member.password : " + member.getPassWord());
+		log.info("member.password : " + member.getPassword());
 		log.info("member.dateOfBirth : " + member.getDateOfBirth());
 		return "success";
 	}
@@ -275,7 +275,7 @@ public class MemberController {
 	@RequestMapping(value = "/registerMemberPassword", method = RequestMethod.POST)
 	public String registerMemberPassword(Member member) {
 		log.info("registerMemberPassword() 실행!!!");
-		log.info("member.getPassWord : " + member.getPassWord());
+		log.info("member.getPassWord : " + member.getPassword());
 		return "success";
 	}
 	
@@ -632,7 +632,7 @@ public class MemberController {
 	public String registerFile03(Member member, MultipartFile picture) {
 		log.info("registerFile03() 실행!!!");
 		log.info("userId : " + member.getUserId());
-		log.info("password : " + member.getPassWord());
+		log.info("password : " + member.getPassword());
 		
 		log.info("originalName : " + picture.getOriginalFilename());
 		log.info("size : " + picture.getSize());

@@ -56,7 +56,7 @@ public class AjaxMemberController {
 			@RequestBody Member member) {
 		log.info("ajaxRegister03() 실행!!!");
 		log.info("userId : " + member.getUserId());
-		log.info("password : " + member.getPassWord());
+		log.info("password : " + member.getPassword());
 		
 		return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 	}
@@ -73,12 +73,12 @@ public class AjaxMemberController {
 	
 	// 5) 요청 URL에 쿼리파라미터를 붙여서 전달하면 문자열 매개변수로 처리한다.
 	@RequestMapping(value = "/register05", method = RequestMethod.POST)
-	public ResponseEntity<String> register05(String userId, String passWord) {
+	public ResponseEntity<String> register05(String userId, String password) {
 		// userId는 쿼리스트링에 담겨져 오는 데이터이기 때문에, 일반적인 방식으로도 데이터를 받을 수 있지만,
 		// passWord는 요청본문에서 데이터를 바인딩해 받아오지 못하므로 null이 출력된다.
 		log.info("register05() 실행!!!");
 		log.info("userId : " + userId);
-		log.info("passWord : " + passWord);
+		log.info("password : " + password);
 		return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 	}
 	
@@ -90,7 +90,7 @@ public class AjaxMemberController {
 		log.info("register06() 실행!!!");
 		log.info("userId : " + userId);
 		log.info("member.getUserId : " + member.getUserId());
-		log.info("member.getPassWord : " + member.getPassWord());
+		log.info("member.getPassword : " + member.getPassword());
 		return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
 	}
 	
@@ -105,7 +105,7 @@ public class AjaxMemberController {
 		
 		for(Member member : memberList) {
 			log.info("member.getUserId : " + member.getUserId());
-			log.info("member.getPassWord : " + member.getPassWord());
+			log.info("member.getPassword : " + member.getPassword());
 		}
 		
 		return new ResponseEntity<String>("SUCCESS", HttpStatus.OK);
@@ -118,7 +118,7 @@ public class AjaxMemberController {
 		log.info("register08() 실행!!!");
 		
 		log.info("userId : " + member.getUserId());
-		log.info("passWord : " + member.getPassWord());
+		log.info("password : " + member.getPassword());
 		
 		Address address = member.getAddress();
 		
@@ -139,7 +139,7 @@ public class AjaxMemberController {
 		log.info("register09() 실행!!!");
 
 		log.info("userId : " + member.getUserId());
-		log.info("passWord : " + member.getPassWord());
+		log.info("password : " + member.getPassword());
 		
 		List<Card> cardList = member.getCardList();
 		
