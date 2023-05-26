@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Board">
+	
+	<sql id="boardSearch">
+		<if test="searchType != null and searchType == 'title'">
+			and (botitle like '%'||#{searchWord}||'%')
+		</if>
+		<if test="searchType != null and searchType == 'writer'">
+			and (bowriter like '%'||#{searchWord}||'%')
+		</if>
+	</sql>
+	
+	<select id="loginSuccess" parameterType="memberVO" resultType="memberVO">
+		select mem_id, mem_name from member where mem_id=#{mem_id} and mem_pw=#{mem_pw}
+	</select>
+	
+	<select id="selectBoardCount" parameterType="pagingVO" resultType="int">
+		select count(bono) from board where 1=1
+		<include refid="boardSearch"/>
+	</select>
+	
+	<select id="selectBoardList" parameterType="pagingVO" resultType="boardVO">
+		select b.*
+		from(
+			select
+				a.*, row_number() over (order by a.bono desc) rnum
+			from(
+				select
+					bono, botitle, bocontent, bowriter, 
+					to_char(bodate, 'yy-mm-dd hh24:mi:ss') bodate, bohit
+				from board
+				where 1=1
+				<include refid="boardSearch"/>
+				order by bono desc
+			) a
+		) b
+		<![CDATA[
+			where b.rnum >= #{startRow} and b.rnum <= #{endRow}
+		]]>
+	</select>
+	
+</mapper>
