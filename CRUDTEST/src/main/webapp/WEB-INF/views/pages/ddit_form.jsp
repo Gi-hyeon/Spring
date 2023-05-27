@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,6 +21,50 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 <!-- CSS Files -->
 <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.0.4" rel="stylesheet" />
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/ckeditor/ckeditor.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script type="text/javascript">
+$(function() {
+	$('#register').on('click', function() {
+		var memId = "${member.mem_id}";
+		var title = $('#boTitle').val();
+		var content = CKEDITOR.instances.boContent.getData();
+		var ext = content.replace(/(&nbsp;|<p>|<\/p>|\s+)/g, "");
+		
+		if (memId == "") {
+			alert("로그인 후 다시 시도해주세요!");
+			return;
+		}
+		
+		if(title == ""){
+			alert("정확한 제목을 입력해주세요!");
+			$('#boTitle').focus();
+			return false;
+		}
+		
+		if(ext=='' || ext == 0){
+			alert("정확한 내용을 입력해주세요!");
+			CKEDITOR.instances.boContent.focus();
+			return false;
+		}
+		
+		$('#rForm').submit();
+		
+	});
+	
+	$('#cancel').on('click', function() {
+		location.href = "/dditList";
+	});
+	
+	$('#dditList').on('click', function() {
+		location.href = "/dditList";
+	});
+	
+	CKEDITOR.replace("boContent");
+	CKEDITOR.config.allowedContent = true;
+	
+})
+</script>
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -54,9 +98,17 @@
 					<div class="ms-md-auto pe-md-3 d-flex align-items-center"></div>
 					<ul class="navbar-nav  justify-content-end">
 						<li class="nav-item d-flex align-items-center">
-							<a href="" class="nav-link text-body font-weight-bold px-0"> 
-								<i class="fa fa-user me-sm-1"></i> 
-								<span class="d-sm-inline d-none">로그인</span>
+							<a href="/dditSignin" class="nav-link text-body font-weight-bold px-0"> 
+								<c:choose>
+									<c:when test="${not empty member }">
+										<i class="fa fa-user me-sm-1" style="display: none;"></i> 
+										<span class="d-sm-inline d-none" style="visibility: hidden;">로그인</span>
+									</c:when>
+									<c:otherwise>
+										<i class="fa fa-user me-sm-1"></i> 
+										<span class="d-sm-inline d-none">로그인</span>
+									</c:otherwise>
+								</c:choose>
 							</a>
 						</li>
 						<li class="nav-item d-flex align-items-center">　</li>
@@ -70,15 +122,31 @@
 						<li class="nav-item d-flex align-items-center">　</li>
 						<li class="nav-item d-flex align-items-center">
 							<div class="d-flex flex-column justify-content-center">
-								<h6 class="mb-0 text-sm">304호반장</h6>
-								<p class="text-xs text-secondary mb-0">Leader-Park@ddit.or.kr</p>
+								<c:choose>
+									<c:when test="${not empty member }">
+										<h6 class="mb-0 text-sm"><c:out value="${member.mem_name }"/></h6>
+										<p class="text-xs text-secondary mb-0">${member.mem_id }</p>
+									</c:when>
+									<c:otherwise>
+										<h5 class="mb-0 text-sm">로그인이 필요합니다.</h5>
+									</c:otherwise>
+								</c:choose>
 							</div>
 						</li>
 						<li class="nav-item d-flex align-items-center">　</li>
 						<li class="nav-item d-flex align-items-center">
-						<a href="" class="nav-link text-body font-weight-bold px-0"> 
-							<i class="fa fa-user me-sm-1"></i> <span class="d-sm-inline d-none">로그아웃</span>
-							</a>
+						<a href="/logout.do" class="nav-link text-body font-weight-bold px-0">
+							<c:choose>
+								<c:when test="${not empty member }">
+									<i class="fa fa-user me-sm-1"></i> 
+									<span class="d-sm-inline d-none">로그아웃</span>
+								</c:when>
+								<c:otherwise>
+									<i class="fa fa-user me-sm-1" style="display: none;"></i> 
+									<span class="d-sm-inline d-none" style="visibility: hidden;">로그아웃</span>
+								</c:otherwise>
+							</c:choose>
+						</a>
 						</li>
 						<li class="nav-item d-flex align-items-center">　</li>
 						<li class="nav-item d-flex align-items-center">
@@ -99,23 +167,26 @@
 			</div>
 			<div class="card card-body mx-3 mx-md-4 mt-n6">
 				<div class="row gx-4 mb-2">
+					<form action="/boardInsert.do" method="post" id="rForm">
+					<input type="hidden" value="${member.mem_id}" name="mem_id" id="mem_id">
 					<div class="col-md-12">
 						<div class="input-group input-group-outline mb-4">
-							<label class="form-label">제목을 입력해주세요.</label> <input type="text"
-								class="form-control">
+							<!-- <label class="form-label">제목을 입력해주세요.</label>  -->
+							<input type="text" class="form-control" name="boTitle" id="boTitle">
 						</div>
 					</div>
 					<div class="col-md-12">
 						<div class="input-group input-group-outline mb-4">
-							<textarea class="form-control" rows="20"></textarea>
+							<textarea class="form-control" rows="20" name="boContent" id="boContent"></textarea>
 						</div>
 					</div>
 					<div class="col-md-12"></div>
 					<div class="col-md-12">
-						<button type="button" class="btn btn-primary">등록</button>
-						<button type="button" class="btn btn-danger">취소</button>
-						<button type="button" class="btn btn-info">목록</button>
+						<button type="button" class="btn btn-primary" id="register">등록</button>
+						<button type="button" class="btn btn-danger" id="cancel">취소</button>
+						<button type="button" class="btn btn-info" id="dditList">목록</button>
 					</div>
+					</form>
 				</div>
 			</div>
 		</div>

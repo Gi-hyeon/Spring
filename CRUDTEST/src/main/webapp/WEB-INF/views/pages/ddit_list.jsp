@@ -35,6 +35,10 @@ $(function() {
 		searchForm.submit();
 	});
 	
+	$('#register').on('click', function() {
+		location.href = "/dditForm";	
+	});
+	
 });
 </script>
 </head>
@@ -138,7 +142,9 @@ $(function() {
 						<div class="card-body px-0 pb-2">
 							<div class="row">
 								<form class="input-group input-group-sm" method="post" id="searchForm">
-									<div class="col-md-6"></div>
+									<div class="col-md-6">
+										<button type="button" class="btn btn-outline-secondary" id="register">게시글 등록하기 </button>
+									</div>
 									<div class="col-md-1">
 										<div class="input-group input-group-static mb-4">
 												<input type="hidden" name="page" id="page" />
@@ -188,8 +194,8 @@ $(function() {
 													<tr onclick="location.href='/dditDetail?boNo=${board.boNo}'" class="text-center">
 														<td width="4%" class="text-dark">${board.boNo }</td>
 														<td width="px" class="text-dark">${board.boTitle }</td>
-														<td width="14%" class="text-dark">${board.boDate }</td>
 														<td width="14%" class="text-dark">${board.boWriter }</td>
+														<td width="14%" class="text-dark">${board.boDate }</td>
 														<td width="6%" class="text-dark">${board.boHit }</td>
 													</tr>
 												</c:forEach>
