@@ -26,16 +26,31 @@
 $(function() {
 	
 	$('#delete').on('click', function() {
+		if (${board.boWriter != member.mem_id}) {
+			alert("삭제 권한이 없습니다.");
+			return;
+		}
+		
 		
 		if (confirm("삭제하시겠습니까?")) {
 			$('#bForm').submit();
 		} else {
-						
+			$('#bForm').reset();		
 		}
 		
 	});
 	
 	$('#edit').on('click', function() {
+		if (${board.boWriter != member.mem_id}) {
+			alert("수정 권한이 없습니다.");
+			return;
+		}
+		
+		$('#bForm').attr('method', 'get');
+		$('#bForm').attr('action', '/boardUpdateForm.do');
+		
+		
+		$('#bForm').submit();
 		
 	});
 	

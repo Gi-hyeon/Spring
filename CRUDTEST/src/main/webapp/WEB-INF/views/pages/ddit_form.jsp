@@ -48,6 +48,12 @@ $(function() {
 			return false;
 		}
 		
+		//alert($(this).text());
+		
+		if ($(this).text() == "수정") {
+			$('#rForm').attr('action', '/boardUpdate.do');
+		}
+		
 		$('#rForm').submit();
 		
 	});
@@ -66,8 +72,11 @@ $(function() {
 })
 </script>
 </head>
-
 <body class="g-sidenav-show  bg-gray-200">
+	<c:set value="등록" var="rBtn"/>
+	<c:if test="${status eq 'u' }">
+		<c:set value="수정" var="rBtn"></c:set>
+	</c:if>
 	<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
 		<div class="sidenav-header">
 			<i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i> 
@@ -168,24 +177,27 @@ $(function() {
 			<div class="card card-body mx-3 mx-md-4 mt-n6">
 				<div class="row gx-4 mb-2">
 					<form action="/boardInsert.do" method="post" id="rForm">
-					<input type="hidden" value="${member.mem_id}" name="mem_id" id="mem_id">
-					<div class="col-md-12">
-						<div class="input-group input-group-outline mb-4">
-							<!-- <label class="form-label">제목을 입력해주세요.</label>  -->
-							<input type="text" class="form-control" name="boTitle" id="boTitle">
+						<c:if test="${status eq 'u' }">
+							<input type="hidden" value="${board.boNo }" name="boNo" id="boNo">
+						</c:if>
+						<input type="hidden" value="${member.mem_id}" name="mem_id" id="mem_id">
+						<div class="col-md-12">
+							<div class="input-group input-group-outline mb-4">
+								<!-- <label class="form-label">제목을 입력해주세요.</label>  -->
+								<input type="text" class="form-control" name="boTitle" id="boTitle" value="${board.boTitle }">
+							</div>
 						</div>
-					</div>
-					<div class="col-md-12">
-						<div class="input-group input-group-outline mb-4">
-							<textarea class="form-control" rows="20" name="boContent" id="boContent"></textarea>
+						<div class="col-md-12">
+							<div class="input-group input-group-outline mb-4">
+								<textarea class="form-control" rows="20" name="boContent" id="boContent">${board.boContent }</textarea>
+							</div>
 						</div>
-					</div>
-					<div class="col-md-12"></div>
-					<div class="col-md-12">
-						<button type="button" class="btn btn-primary" id="register">등록</button>
-						<button type="button" class="btn btn-danger" id="cancel">취소</button>
-						<button type="button" class="btn btn-info" id="dditList">목록</button>
-					</div>
+						<div class="col-md-12"></div>
+						<div class="col-md-12">
+							<button type="button" class="btn btn-primary" id="register">${rBtn }</button>
+							<button type="button" class="btn btn-danger" id="cancel">취소</button>
+							<button type="button" class="btn btn-info" id="dditList">목록</button>
+						</div>
 					</form>
 				</div>
 			</div>
