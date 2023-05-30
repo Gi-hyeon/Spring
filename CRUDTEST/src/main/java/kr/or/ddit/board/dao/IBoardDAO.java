@@ -14,4 +14,16 @@ public interface IBoardDAO {
 
 	public List<BoardVO> selectBoardList(PaginationInfoVO<BoardVO> pagingVO);
 
+	public BoardVO selectBoardByboNo(int boNo);
+
+	public void boHitIncrement(int boNo);
+
+	public int boardInsert(BoardVO board);
+
+	public int boardDelete(int boNo);
+
+	public int boardUpdate(BoardVO board);
+
+	public int userRegister(MemberVO member);
+
 }

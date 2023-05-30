@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,13 +21,52 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 <!-- CSS Files -->
 <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.0.4" rel="stylesheet" />
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script type="text/javascript">
+$(function() {
+	
+	$('#delete').on('click', function() {
+		if (${board.boWriter != member.mem_id}) {
+			alert("삭제 권한이 없습니다.");
+			return;
+		}
+		
+		
+		if (confirm("삭제하시겠습니까?")) {
+			$('#bForm').submit();
+		} else {
+			$('#bForm').reset();		
+		}
+		
+	});
+	
+	$('#edit').on('click', function() {
+		if (${board.boWriter != member.mem_id}) {
+			alert("수정 권한이 없습니다.");
+			return;
+		}
+		
+		$('#bForm').attr('method', 'get');
+		$('#bForm').attr('action', '/boardUpdateForm.do');
+		
+		
+		$('#bForm').submit();
+		
+	});
+	
+	$('#dditList').on('click', function() {
+		location.href = "/dditList";
+	});
+})
+</script>
 </head>
-
+<c:if test="${not empty deleteErr }">
+	 <script type="text/javascript">
+	 	alert("삭제 실패! 다시 시도해주세요!");
+	 </script>
+</c:if>
 <body class="g-sidenav-show  bg-gray-200">
-	<aside
-		class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
-		id="sidenav-main">
+	<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
 		<div class="sidenav-header">
 			<i
 				class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
@@ -64,9 +103,17 @@
 					<div class="ms-md-auto pe-md-3 d-flex align-items-center"></div>
 					<ul class="navbar-nav  justify-content-end">
 						<li class="nav-item d-flex align-items-center">
-							<a href="" class="nav-link text-body font-weight-bold px-0"> 
-								<i class="fa fa-user me-sm-1"></i> 
-								<span class="d-sm-inline d-none">로그인</span>
+							<a href="/dditSignin" class="nav-link text-body font-weight-bold px-0">
+								<c:choose>
+									<c:when test="${not empty member }">
+										<i class="fa fa-user me-sm-1" style="display: none;"></i> 
+										<span class="d-sm-inline d-none" style="visibility: hidden;">로그인</span>
+									</c:when>
+									<c:otherwise>
+										<i class="fa fa-user me-sm-1"></i> 
+										<span class="d-sm-inline d-none" id="login">로그인</span>
+									</c:otherwise>
+								</c:choose>
 							</a>
 						</li>
 						<li class="nav-item d-flex align-items-center">　</li>
@@ -81,15 +128,30 @@
 						<li class="nav-item d-flex align-items-center">　</li>
 						<li class="nav-item d-flex align-items-center">
 							<div class="d-flex flex-column justify-content-center">
-								<h6 class="mb-0 text-sm">304호반장</h6>
-								<p class="text-xs text-secondary mb-0">Leader-Park@ddit.or.kr</p>
+								<c:choose>
+									<c:when test="${not empty member }">
+										<h6 class="mb-0 text-sm"><c:out value="${member.mem_name }"/></h6>
+										<p class="text-xs text-secondary mb-0">${member.mem_id }</p>
+									</c:when>
+									<c:otherwise>
+										<h5 class="mb-0 text-sm">로그인이 필요합니다.</h5>
+									</c:otherwise>
+								</c:choose>
 							</div>
 						</li>
 						<li class="nav-item d-flex align-items-center">　</li>
 						<li class="nav-item d-flex align-items-center">
-							<a href="" class="nav-link text-body font-weight-bold px-0"> 
-								<i class="fa fa-user me-sm-1"></i> 
-								<span class="d-sm-inline d-none">로그아웃</span>
+							<a href="/logout.do" class="nav-link text-body font-weight-bold px-0"> 
+								<c:choose>
+									<c:when test="${not empty member }">
+										<i class="fa fa-user me-sm-1"></i> 
+										<span class="d-sm-inline d-none" id="logout">로그아웃</span>
+									</c:when>
+									<c:otherwise>
+										<i class="fa fa-user me-sm-1" style="display: none;"></i> 
+										<span class="d-sm-inline d-none" style="visibility: hidden; ">로그아웃</span>
+									</c:otherwise>
+								</c:choose>
 							</a>
 						</li>
 					</ul>
@@ -106,8 +168,8 @@
 				<div class="row gx-4 mb-2">
 					<div class="col-md-8">
 						<div class="h-100">
-							<h5 class="mb-1">제목을 입력해주세요.</h5>
-							<p class="mb-0 font-weight-normal text-sm">작성일 / 조회수</p>
+							<h5 class="mb-1">${board.boTitle }</h5>
+							<p class="mb-0 font-weight-normal text-sm">${board.boDate } / ${board.boHit }</p>
 						</div>
 					</div>
 				</div>
@@ -117,13 +179,16 @@
 							<div class="card-header pb-0 p-3">
 								<h6 class="mb-0">내용</h6>
 							</div>
-							<div class="card-body p-3">내용을 입력해주세요.</div>
+							<div class="card-body p-3">${board.boContent }</div>
 							<hr />
 							<div class="card-footer p-3">
-								<button type="button" class="btn btn-outline-primary">삭제</button>
-								<button type="button" class="btn btn-outline-secondary">수정</button>
-								<button type="button" class="btn btn-outline-success">목록</button>
+								<button type="button" class="btn btn-outline-primary" id="delete">삭제</button>
+								<button type="button" class="btn btn-outline-secondary" id="edit">수정</button>
+								<button type="button" class="btn btn-outline-success" id="dditList">목록</button>
 							</div>
+							<form action="/boardDelete.do" method="post" id="bForm">
+								<input hidden="${board.boNo }" value="${board.boNo }" name="boNo">
+							</form>
 						</div>
 					</div>
 				</div>

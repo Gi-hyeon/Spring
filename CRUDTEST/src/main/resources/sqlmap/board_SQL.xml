@@ -42,4 +42,44 @@
 		]]>
 	</select>
 	
+	<select id="selectBoardByboNo" parameterType="int" resultType="boardVO">
+		select
+			bono, botitle, bocontent, bowriter, bodate, bohit
+		from
+			board
+		where bono = #{boNo} 
+	</select>
+	
+	<update id="boHitIncrement" parameterType="int">
+		update 
+			board 
+		set 
+			bohit = bohit + 1
+		where bono = #{boNo}
+	</update>
+	
+	
+	<insert id="boardInsert" parameterType="boardVO" useGeneratedKeys="true">
+		<selectKey keyProperty="boNo" order="BEFORE" resultType="int">
+			select seq_board.nextval from dual
+		</selectKey>
+		insert into board(BONO, BOTITLE, BOCONTENT, BOWRITER, BODATE)
+		values(#{boNo}, #{boTitle}, #{boContent}, #{boWriter}, sysdate)
+	</insert>
+	
+	<delete id="boardDelete" parameterType="int">
+		delete from board where bono = #{boNo}
+	</delete>
+	
+	<update id="boardUpdate" parameterType="boardVO">
+		update board
+		set botitle = #{boTitle}, bocontent = #{boContent}, bodate = sysdate
+		where bono = #{boNo}
+	</update>
+	
+	<insert id="userRegister" parameterType="memberVO">
+		insert into MEMBER(MEM_NO, MEM_ID, MEM_PW, MEM_NAME, MEM_GENDER, MEM_PHONE, MEM_EMAIL, MEM_AGREE)
+    	values(seq_member.nextval, #{mem_id}, #{mem_pw}, #{mem_name}, #{mem_gender}, #{mem_phone}, #{mem_email}, #{mem_agree})
+	</insert>
+	
 </mapper>
