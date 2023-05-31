@@ -15,5 +15,8 @@
 	
 	<fmt:formatNumber value="${coin }" type="currency" var="coinNum"/>
 	<p>coinNum : ${coinNum }</p>
+	
+	<fmt:formatNumber value="${coin }" type="percent" var="coinNum"/>
+	<p>coinNum : ${coinNum }</p>
 </body>
 </html>
