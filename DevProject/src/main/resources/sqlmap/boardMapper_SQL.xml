@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.BoardMapper">
+	<insert id="create" parameterType="board" useGeneratedKeys="true">
+		<selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
+			select seq_board.nextval from dual
+		</selectKey>
+		insert into board(
+			board_no, title, content, writer, reg_date
+		)values(
+			#{boardNo}, #{title}, #{content}, #{writer}, sysdate
+		)
+	</insert>
+</mapper>
