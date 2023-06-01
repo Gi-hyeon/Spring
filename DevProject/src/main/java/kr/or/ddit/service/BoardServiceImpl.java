@@ -1,5 +1,7 @@
 package kr.or.ddit.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -16,6 +18,32 @@ public class BoardServiceImpl implements IBoardService {
 	@Override
 	public void register(Board board) {
 		mapper.create(board);
+	}
+
+	@Override
+	public List<Board> list() {
+		return mapper.list();
+	}
+
+	@Override
+	public Board read(int boardNo) {
+		return mapper.read(boardNo);
+	}
+
+	@Override
+	public void update(Board board) {
+		mapper.update(board);
+	}
+
+	@Override
+	public void delete(int boardNo) {
+		mapper.delete(boardNo);
+	}
+
+	@Override
+	public List<Board> search(Board board) {
+		// TODO Auto-generated method stub
+		return mapper.search(board);
 	}
 
 }
