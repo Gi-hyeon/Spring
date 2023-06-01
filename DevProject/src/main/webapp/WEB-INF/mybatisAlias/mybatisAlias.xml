@@ -16,5 +16,7 @@
 	<typeAliases>
 		<!-- <typeAlias type="클래스명(패키지구조를 포함한)" alias="별칭명"/> -->
 		<typeAlias type="kr.or.ddit.vo.Board" alias="board"/>
+		<typeAlias type="kr.or.ddit.vo.MemberVO" alias="memberVO"/>
+		<typeAlias type="kr.or.ddit.vo.MemberAuth" alias="memberAuth"/>
 	</typeAliases>
 </configuration>
