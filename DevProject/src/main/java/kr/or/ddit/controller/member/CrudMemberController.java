@@ -58,4 +58,34 @@ public class CrudMemberController {
 		return "crud/member/read";
 	}
 	
+	@RequestMapping(value = "/modify", method = RequestMethod.GET)
+	public String modifyForm(Model model, int userNo) {
+		log.info("modifyForm() 실행...!");
+		
+		MemberVO member = service.read(userNo);
+		model.addAttribute("member", member);
+		
+		return "crud/member/modify";
+	}
+	
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public String modify(Model model, MemberVO member) {
+		log.info("modify() 실행...!");
+		
+		service.modify(member);
+		model.addAttribute("msg", "수정이 완료되었습니다!");
+		
+		return "crud/member/success";
+	}
+	
+	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	public String remove(Model model, int userNo) {
+		log.info("remove() 실행...!");
+		
+		service.remove(userNo);
+		model.addAttribute("msg", "삭제가 완료되었습니다!");
+		
+		return "crud/member/success";
+	}
+	
 }
