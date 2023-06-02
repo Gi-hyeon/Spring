@@ -15,4 +15,10 @@ public interface MemberMapper {
 
 	public MemberVO read(int userNo);
 
+	public void modify(MemberVO member);
+
+	public void deleteAuth(int userNo);
+
+	public void delete(int userNo);
+
 }
