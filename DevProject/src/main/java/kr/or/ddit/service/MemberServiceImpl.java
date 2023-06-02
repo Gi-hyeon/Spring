@@ -34,8 +34,50 @@ public class MemberServiceImpl implements IMemberService {
 
 	@Override
 	public MemberVO read(int userNo) {
-		// TODO Auto-generated method stub
 		return mapper.read(userNo);
 	}
 
+	@Override
+	public void modify(MemberVO member) {
+		mapper.modify(member);
+		
+		int userNo = member.getUserNo();
+		mapper.deleteAuth(userNo);
+		
+		List<MemberAuth> authList = member.getAuthList();
+		for(int i=0; i<authList.size(); i++) {
+			MemberAuth memberAuth = authList.get(i);
+			String auth = memberAuth.getAuth();
+			if (auth == null) {
+				continue;
+			}
+			if (auth.trim().length() == 0) {
+				continue;
+			}
+			
+			//System.out.println("auth -> " + auth);
+			
+			memberAuth.setUserNo(userNo);
+			mapper.createAuth(memberAuth);
+		}
+	}
+
+	@Override
+	public void remove(int userNo) {
+		mapper.deleteAuth(userNo);
+		mapper.delete(userNo);
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
