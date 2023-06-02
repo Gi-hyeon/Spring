@@ -54,4 +54,31 @@
 		where m.user_no = #{userNo}
 	</select>
 	
+	<update id="modify" parameterType="memberVO">
+		update member
+		set
+			user_name = #{userName}
+		where user_no = #{userNo}
+	</update>
+	
+	<delete id="deleteAuth">
+		delete from member_auth
+		where user_no = #{userNo} 
+	</delete>
+	
+	<delete id="delete" parameterType="int">
+		delete from member
+		where user_no =#{userNo}
+	</delete>
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
