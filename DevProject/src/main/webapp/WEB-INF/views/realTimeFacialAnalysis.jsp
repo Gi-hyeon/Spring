@@ -4,56 +4,62 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-<script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1/dist/face-api.js"></script>
-<script>
-	window.onload = function() {
-	    startFaceDetection();
-	};
-	
-    async function startFaceDetection() {
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
+<style type="text/css">
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
 
-        // Check if video element exists
-        if (!video) {
-            console.error('Video element not found.');
-            return;
-        }
+#myImg{
+	width: 450px;
+	height: 450px;
+}
 
-        const displaySize = { width: video.width, height: video.height };
+.container{
+	margin-top: 5%;
+	position: relative;
+}
 
-        await faceapi.loadSsdMobilenetv1Model('/models');
-        await faceapi.loadFaceExpressionModel('/models');
+canvas{
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+</style>
+<script src="${pageContext.request.contextPath }/resources/face-api.js-master/dist/face-api.js"></script>
+<script src="${pageContext.request.contextPath }/resources/face-api.js-master/dist/face-api.min.js"></script>
+<script src="${pageContext.request.contextPath }/resources/face-api.js-master/script.js"></script>
+<script type="text/javascript">
 
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            video.srcObject = stream;
-
-            video.addEventListener('loadedmetadata', () => {
-                const context = canvas.getContext('2d');
-
-                setInterval(async () => {
-                    const detections = await faceapi.detectAllFaces(video).withFaceExpressions();
-
-                    context.clearRect(0, 0, canvas.width, canvas.height);
-
-                    faceapi.draw.drawDetections(canvas, faceapi.resizeResults(detections, displaySize));
-                    faceapi.draw.drawFaceExpressions(canvas, faceapi.resizeResults(detections, displaySize));
-                }, 100);
-            });
-        } catch (error) {
-            console.error('Error accessing webcam:', error);
-        }
-    }
-
-    startFaceDetection();
-</script>
+</script>	
 </head>
 <body>
 	<h1>Face-Api.js Test</h1>
 	
-	<video src="" id="video" width="600" height="500" autoplay="autoplay"></video>
-	<canvas id="canvas" ></canvas>
+	<div class="container">
+		<img alt="" src="" id="myImg">
+	</div>
+	<input type="file" id="myFile" onchange="uploadImage()" accept=".jpg, .jpeg, .png">
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
