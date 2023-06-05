@@ -47,6 +47,18 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="kr.or.ddit.mapper"/>
 	</bean>
+	
+	<!-- MultipartFile CommonsMultipartResolver 설정 시 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 파일 업로드 용량(10MB) -->
+		<property name="maxUploadSize" value="10485760"/>
+		<!-- 파일 인코딩 UTF-8 -->
+		<property name="defaultEncoding" value="UTF-8"/>
+	</bean>
+	
+	<bean id="uploadPath" class="java.lang.String">
+		<constructor-arg value="D:\A_TeachingMaterial\6_JspSpring\02.SPRING2\workspace_spring2\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\DevProject\resources\upload"></constructor-arg>
+	</bean>
 </beans>
 
 
