@@ -37,8 +37,17 @@
 	</beans:bean>
 	<!-- Tiles 설정 끝 -->
 	
+	<!-- 
+		서블릿 표준용 MultipartResolver 스프링 빈으로 정의
+		- StandardServletMultipartResolver 사용 시 설정
+			> Servlet 3.0의 Part를 이용한 MultipartFile 데이터 처리
+	 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+	
+	</beans:bean>
+	
 	<context:component-scan base-package="kr.or.ddit" />
 	
-	
+	<resources location="/resources/" mapping="/resources/**"></resources>
 	
 </beans:beans>
