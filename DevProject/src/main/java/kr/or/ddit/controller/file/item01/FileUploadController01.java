@@ -1,12 +1,21 @@
 package kr.or.ddit.controller.file.item01;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
 
+import org.apache.commons.io.IOUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -73,17 +82,38 @@ public class FileUploadController01 {
 	 * 
 	 * 		1. 파일 업로드 구현 설명
 	 * 
-	 * 			- 파일업로드 등록 화면 컨트롤러 만들기 (FileUploadController01)
-	 * 			- 파일업로드 등록 화면 메서드 만들기 (itemRegisterForm:get)
-	 * 			- 파일업로드 등록 화면 만들기 (item/register.jsp)
+	 * 			- 파일 업로드 등록 화면 컨트롤러 만들기 (FileUploadController01)
+	 * 			- 파일 업로드 등록 화면 메서드 만들기 (itemRegisterForm:get)
+	 * 			- 파일 업로드 등록 화면 만들기 (item/register.jsp)
 	 * 			- 확인
 	 * 
-	 * 			- 파일업로드 등록 기능 컨트롤러 메서드 만들기(itemRegister:post)
-	 * 			- 파일업로드 등록 기능 서비스 인터페이스 메서드 만들기
-	 * 			- 파일업로드 등록 기능 서비스 클래스 메서드 만들기
-	 * 			- 파일업로드 등록 기능 Mapper 인터페이스 메서드 만들기
-	 * 			- 파일업로드 등록 기능 Mapper xml 쿼리 만들기
-	 * 			- 파일업로드 등록 완료 페이지 만들기
+	 * 			- 파일 업로드 등록 기능 컨트롤러 메서드 만들기(itemRegister:post)
+	 * 			- 파일 업로드 등록 기능 서비스 인터페이스 메서드 만들기
+	 * 			- 파일 업로드 등록 기능 서비스 클래스 메서드 만들기
+	 * 			- 파일 업로드 등록 기능 Mapper 인터페이스 메서드 만들기
+	 * 			- 파일 업로드 등록 기능 Mapper xml 쿼리 만들기
+	 * 			- 파일 업로드 등록 완료 페이지 만들기
+	 * 			- 확인
+	 * 
+	 * 			- 파일 업로드 목록 화면 컨트롤러 메서드 만들기(itemList:get)  
+	 * 			- 파일 업로드 목록 화면 서비스 인터페이스 메서드 만들기                
+	 * 			- 파일 업로드 목록 화면 서비스 클래스 메서드 만들기                  
+	 * 			- 파일 업로드 목록 화면 Mapper 인터페이스 메서드 만들기             
+	 * 			- 파일 업로드 목록 화면 Mapper xml 쿼리 만들기                
+	 * 			- 파일 업로드 목록 화면 만들기 (item/list)     
+	 * 			- 확인         
+	 * 
+	 * 			- 파일 업로드 수정 화면 컨트롤러 메서드 만들기(itemModify:get)       
+	 * 			- 파일 업로드 수정 화면 서비스 인터페이스 메서드 만들기                
+	 * 			- 파일 업로드 수정 화면 서비스 클래스 메서드 만들기                  
+	 * 			- 파일 업로드 수정 화면 Mapper 인터페이스 메서드 만들기             
+	 * 			- 파일 업로드 수정 화면 Mapper xml 쿼리 만들기                
+	 * 			- 파일 업로드 수정 화면 만들기 (item/modify.jsp)                  
+	 * 			- 파일 업로드 수정 기능 컨트롤러 메서드 만들기 (itemModify:post)
+	 * 			- 파일 업로드 수정 기능 서비스 인터페이스 메서드 만들기                   
+	 * 			- 파일 업로드 수정 기능 서비스 클래스 메서드 만들기                     
+	 * 			- 파일 업로드 수정 기능 Mapper 인터페이스 메서드 만들기                
+	 * 			- 파일 업로드 수정 기능 Mapper xml 쿼리 만들기                   
 	 * 			- 확인
 	 * 
 	 */
@@ -120,6 +150,71 @@ public class FileUploadController01 {
 		return "item/success";
 	}
 	
+	
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public String itemList(Model model) {
+		List<Item> itemList = itemService.list();
+		model.addAttribute("itemList", itemList);
+		
+		return "item/list";
+	}
+	
+	@RequestMapping(value = "/modify", method = RequestMethod.GET)
+	public String itemModifyForm(int itemId, Model model) {
+		Item item = itemService.read(itemId);
+		model.addAttribute("item", item);
+		
+		return "item/modify";
+	}
+	
+	@RequestMapping(value = "/display")
+	public ResponseEntity<byte[]> displayFile(int itemId) throws FileNotFoundException {
+		InputStream in = null;
+		ResponseEntity<byte[]> entity = null;
+		
+		String fileName = itemService.getPicture(itemId);
+		log.info("fileName : " + fileName);
+		
+		try {
+			String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);	// 확장자 추출
+			MediaType mType = getMediaType(formatName);
+			HttpHeaders headers = new HttpHeaders();
+			
+			in = new FileInputStream(resourcesPath + File.separator + fileName);
+			if (mType != null) {
+				headers.setContentType(mType);
+			}
+			
+			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);
+		} catch (IOException e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
+		} finally {
+			try {
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return entity;
+	}
+	
+	public MediaType getMediaType(String formatName) {
+		if (formatName != null) {
+			if (formatName.toUpperCase().equals("JPG")) {
+				return MediaType.IMAGE_JPEG;
+			}
+			if (formatName.toUpperCase().equals("GIF")) {
+				return MediaType.IMAGE_GIF;
+			}
+			if (formatName.toUpperCase().equals("PNG")) {
+				return MediaType.IMAGE_PNG;
+			}
+		}
+		
+		return null;
+	}
 	
 	private String uploadFile(String originalName, byte[] fileData) throws IOException {
 		System.out.println("resourcesPath : " + resourcesPath);
