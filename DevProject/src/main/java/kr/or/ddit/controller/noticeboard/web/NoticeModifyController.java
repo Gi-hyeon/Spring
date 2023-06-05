@@ -48,4 +48,39 @@ public class NoticeModifyController {
 		return goPage;
 	}
 	
+	@RequestMapping(value = "/delete.do", method = RequestMethod.POST)
+	public String noticeDelete(int boNo, Model model) {
+		String goPage = "";
+		ServiceResult result = null;
+		
+		result = noticeService.deleteNotice(boNo);
+		if (result.equals(ServiceResult.OK)) {
+			goPage = "redirect:/notice/list.do";
+		} else {
+			model.addAttribute("message", "서버 오류, 다시 시도해주세요!");
+			goPage = "redirect:/notice.detail.do?boNo=" + boNo;
+		}
+		
+		return goPage;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
