@@ -1,5 +1,7 @@
 package kr.or.ddit.controller.file.item01.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -16,6 +18,21 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public void register(Item item) {
 		mapper.create(item);
+	}
+
+	@Override
+	public List<Item> list() {
+		return mapper.list();
+	}
+
+	@Override
+	public Item read(int itemId) {
+		return mapper.read(itemId);
+	}
+
+	@Override
+	public String getPicture(int itemId) {
+		return mapper.getPicture(itemId);
 	}
 
 }
