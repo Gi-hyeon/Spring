@@ -14,4 +14,8 @@ public interface ItemMapper {
 
 	public String getPicture(int itemId);
 
+	public void modify(Item item);
+
+	public void remove(int itemId);
+
 }
