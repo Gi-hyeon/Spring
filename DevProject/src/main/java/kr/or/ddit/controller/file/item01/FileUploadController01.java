@@ -116,6 +116,19 @@ public class FileUploadController01 {
 	 * 			- 파일 업로드 수정 기능 Mapper xml 쿼리 만들기                   
 	 * 			- 확인
 	 * 
+	 * 			- 파일 업로드 삭제 화면 컨트롤러 메서드 만들기(itemRemoveForm:get)    
+	 * 			- 파일 업로드 삭제 화면 서비스 인터페이스 메서드 만들기             
+	 * 			- 파일 업로드 삭제 화면 서비스 클래스 메서드 만들기               
+	 * 			- 파일 업로드 삭제 화면 Mapper 인터페이스 메서드 만들기          
+	 * 			- 파일 업로드 삭제 화면 Mapper xml 쿼리 만들기             
+	 * 			- 파일 업로드 삭제 화면 만들기 (item/remove.jsp)             
+	 * 			- 파일 업로드 삭제 기능 컨트롤러 메서드 만들기(itemRemove:post)     
+	 * 			- 파일 업로드 삭제 기능 서비스 인터페이스 메서드 만들기                    
+	 * 			- 파일 업로드 삭제 기능 서비스 클래스 메서드 만들기                      
+	 * 			- 파일 업로드 삭제 기능 Mapper 인터페이스 메서드 만들기                 
+	 * 			- 파일 업로드 삭제 기능 Mapper xml 쿼리 만들기                    
+	 * 			- 확인
+	 * 
 	 */
 	
 	// root-context.xml에서 설정한 uploadPath 빈등록 path 경로를 사용한다(value로 설정했던 값)
@@ -165,6 +178,41 @@ public class FileUploadController01 {
 		model.addAttribute("item", item);
 		
 		return "item/modify";
+	}
+	
+	@RequestMapping(value = "/modify", method = RequestMethod.POST)
+	public String itemModify(Item item, Model model) throws IOException {
+		MultipartFile file = item.getPicture();
+		
+		if (file != null && file.getSize() > 0) {
+			log.info("MoriginalName : " + file.getOriginalFilename());
+			log.info("Msize : " + file.getSize());
+			log.info("McontentType : " + file.getContentType());
+			
+			String createdFileName = uploadFile(file.getOriginalFilename(), file.getBytes());
+			item.setPictureUrl(createdFileName);
+		}
+		
+		itemService.modify(item);
+		model.addAttribute("msg", "수정이 완료되었습니다");
+		
+		return "item/success";
+	}
+	
+	@RequestMapping(value = "/remove", method = RequestMethod.GET)
+	public String itemRemoveForm(int itemId, Model model) {
+		Item item = itemService.read(itemId);
+		model.addAttribute("item", item);
+		
+		return "item/remove";
+	}
+	
+	@RequestMapping(value = "/remove", method = RequestMethod.POST)
+	public String itemRemove(int itemId, Model model) {
+		itemService.remove(itemId);
+		model.addAttribute("msg", "삭제가 완료되었습니다.");
+		
+		return "item/success";
 	}
 	
 	@RequestMapping(value = "/display")
