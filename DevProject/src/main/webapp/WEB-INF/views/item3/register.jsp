@@ -118,15 +118,6 @@ $(function() {
 	
 	
 	function getThumbnailName(fileName) {
-		if (checkImageType(fileName)) {
-			return;
-		}
-		
-		var idx = fileName.indexOf("_") + 1;
-		return fileName.substr(idx);
-	}
-	
-	function getOriginalName(fileName) {
 		var front = fileName.substr(0, 12);	// /2023/06/07 폴더
 		var end = fileName.substr(12);		// 뒤 파일명
 		
@@ -134,6 +125,15 @@ $(function() {
 		console.log("end : " + end);
 		
 		return front + "s_" + end;
+	}
+	
+	function getOriginalName(fileName) {
+		if (checkImageType(fileName)) {
+			return;
+		}
+		
+		var idx = fileName.indexOf("_") + 1;
+		return fileName.substr(idx);
 	}
 	
 	// 이미지 파일인지 확인한다.
