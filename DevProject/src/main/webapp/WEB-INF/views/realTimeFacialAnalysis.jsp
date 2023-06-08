@@ -118,6 +118,9 @@ Promise.all([
 		<img alt="" src="" id="myImg">
 	</div>
 	<input type="file" id="myFile" onchange="uploadImage()" accept=".jpg, .jpeg, .png">
+	
+	<p style="font-size: 50px; color: blue;"></p>
+	<img alt="" src="https://i.namu.wiki/i/EbHl4I2dCr3aoC7AFjMYv7zBAFQTE0Cr0-r2XiIKLakxARH3BY9eonE3AZ2_ctET_2vpLI-piN4F224wAUdyyQ.webp" style="height: 1000px; height: 1000px">
 </body>
 </html>
 
