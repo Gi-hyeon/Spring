@@ -101,6 +101,7 @@ $(function() {
 	var signupForm = $('#signupForm');	// 가입Form
 	var idCheckFlag = false;			// 중복환인 Flag 값(default : false, 중복확인 진행하지 않음)
 	
+	// 프로필 이미지 선택
 	imgFile.on('change', function(event) {
 		var file = event.target.files[0];
 		
