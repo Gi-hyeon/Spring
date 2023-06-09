@@ -1,7 +1,9 @@
 package kr.or.ddit.vo;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
@@ -17,5 +19,20 @@ public class NoticeVO {
 	
 	private Integer[] delNoticeNo;
 	private MultipartFile[] boFile;
-//	private List<NoticeFileVO> noticeFileList;
+	private List<NoticeFileVO> noticeFileList;
+	
+	public void setBoFile(MultipartFile[] boFile) {
+		this.boFile = boFile;
+		if (boFile != null) {
+			List<NoticeFileVO> noticeFileList = new ArrayList<NoticeFileVO>();
+			for(MultipartFile item : boFile) {
+				if (StringUtils.isBlank(item.getOriginalFilename())) {
+					continue;
+				}
+				NoticeFileVO noticeFileVO = new NoticeFileVO(item);
+				noticeFileList.add(noticeFileVO);
+			}
+			this.noticeFileList = noticeFileList;
+		}
+	}
 }
