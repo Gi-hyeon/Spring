@@ -11,7 +11,7 @@ import kr.or.ddit.vo.PaginationInfoVO;
 
 public interface INoticeService {
 
-	public ServiceResult insertNotice(NoticeVO noticeVO);
+	public ServiceResult insertNotice(HttpServletRequest req, NoticeVO noticeVO);
 
 	public NoticeVO selectNotice(int boNo);
 
@@ -28,5 +28,9 @@ public interface INoticeService {
 	public ServiceResult signup(HttpServletRequest req, DDITMemberVO memberVO);
 
 	public DDITMemberVO loginCheck(DDITMemberVO memberVO);
+
+	public String idForgetProcess(DDITMemberVO member);
+
+	public String pwForgetProcess(DDITMemberVO member);
 
 }
