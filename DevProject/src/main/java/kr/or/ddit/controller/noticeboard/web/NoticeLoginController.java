@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -129,7 +130,7 @@ public class NoticeLoginController {
 			goPage = "conn/login";
 		} else {
 			DDITMemberVO member = noticeService.loginCheck(memberVO);
-			if (memberVO != null) { 
+			if (member != null) { 
 				HttpSession session = req.getSession(); 
 				session.setAttribute("SessionInfo", member);
 				goPage = "redirect:/notice/list.do";
@@ -137,10 +138,27 @@ public class NoticeLoginController {
 				model.addAttribute("bodyText", "login-page");
 				model.addAttribute("message", "서버에러, 로그인  정보를 정확하게 입력해주세요!");
 				model.addAttribute("member", memberVO);
+				goPage = "conn/login";
 			}
 		}
 		
 		return goPage;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/idForget.do", method = RequestMethod.POST)
+	public ResponseEntity<String> idForgetProcess(@RequestBody DDITMemberVO member) {
+		String memId = noticeService.idForgetProcess(member);
+		
+		return new ResponseEntity<String>(memId, HttpStatus.OK);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/pwForget.do", method = RequestMethod.POST)
+	public ResponseEntity<String> pwForgetProcess(@RequestBody DDITMemberVO member) {
+		String memPw = noticeService.pwForgetProcess(member);
+		
+		return new ResponseEntity<String>(memPw, HttpStatus.OK);
 	}
 }
 
