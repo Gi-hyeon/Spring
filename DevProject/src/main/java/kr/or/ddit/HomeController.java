@@ -344,7 +344,7 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping(value = "/rtFacialAnalysis")
+	@RequestMapping(value = "/face")
 	public String rtFacialAnalysis() {
 		
 		return "realTimeFacialAnalysis";
