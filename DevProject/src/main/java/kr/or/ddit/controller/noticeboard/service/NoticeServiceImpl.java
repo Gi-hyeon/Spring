@@ -16,6 +16,7 @@ import kr.or.ddit.controller.noticeboard.web.TelegramSendController;
 import kr.or.ddit.mapper.LoginMapper;
 import kr.or.ddit.mapper.NoticeMapper;
 import kr.or.ddit.vo.DDITMemberVO;
+import kr.or.ddit.vo.NoticeFileVO;
 import kr.or.ddit.vo.NoticeVO;
 import kr.or.ddit.vo.PaginationInfoVO;
 
@@ -31,11 +32,18 @@ public class NoticeServiceImpl implements INoticeService {
 	TelegramSendController tst = new TelegramSendController();
 	
 	@Override
-	public ServiceResult insertNotice(NoticeVO noticeVO) {
+	public ServiceResult insertNotice(HttpServletRequest req, NoticeVO noticeVO) {
 		ServiceResult result = null;
 		
 		int status = noticeMapper.insertNotice(noticeVO);
 		if (status > 0) {
+			List<NoticeFileVO> noticeFileList = noticeVO.getNoticeFileList();
+			try {
+				noticeFileUpload(noticeFileList, noticeVO.getBoNo(), req);
+			} catch (IllegalStateException | IOException e1) {
+				e1.printStackTrace();
+			}
+			
 			// 성공했다는 메시지를 텔레그램 BOT API를 이용하여 알림!
 			try {
 				tst.sendGet("406호", noticeVO.getBoTitle());
@@ -149,6 +157,48 @@ public class NoticeServiceImpl implements INoticeService {
 		return loginMapper.loginCheck(memberVO);
 	}
 
+	@Override
+	public String idForgetProcess(DDITMemberVO member) {
+		// TODO Auto-generated method stub
+		return loginMapper.idForgetProcess(member);
+	}
+
+	@Override
+	public String pwForgetProcess(DDITMemberVO member) {
+		// TODO Auto-generated method stub
+		return loginMapper.pwForgetProcess(member);
+	}
+
+	private void noticeFileUpload(List<NoticeFileVO> noticeFileList, int boNo, HttpServletRequest req) throws IllegalStateException, IOException {
+		String savePath = "/resources/notice/";
+		
+		if (noticeFileList != null && noticeFileList.size() > 0) {
+			for(NoticeFileVO noticeFileVO : noticeFileList) {
+				String saveName = UUID.randomUUID().toString();
+				
+				// 파일명을 설정할 때 원본 파일명의 곱액을 '_'로 변경한다. 
+				saveName = saveName + "_" + noticeFileVO.getFileName().replaceAll(" ", "_");
+				String endFileName = noticeFileVO.getFileName().split("\\.")[1];	// 사용x -> 확장자 (디버깅 및 확장자 추출 참고)
+				
+				// /resources/notice/1
+				String saveLocate = req.getServletContext().getRealPath(savePath + boNo);
+				File file = new File(saveLocate);
+				if (!file.exists()) {
+					file.mkdirs();
+				}
+				
+				saveLocate += "/" + saveName;
+				File saveFile = new File(saveLocate);
+				
+				noticeFileVO.setBoNo(boNo);
+				noticeFileVO.setFileSavepath(saveLocate);
+				noticeMapper.insertNoticeFile(noticeFileVO);
+				
+				noticeFileVO.getItem().transferTo(saveFile);	// 파일 복사
+			}
+		}
+	}
+	
 }
 
 
