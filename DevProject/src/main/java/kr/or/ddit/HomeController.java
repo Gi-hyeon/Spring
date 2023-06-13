@@ -342,13 +342,6 @@ public class HomeController {
 		
 		return entity;
 	}
-	
-	
-	@RequestMapping(value = "/face")
-	public String rtFacialAnalysis() {
-		
-		return "realTimeFacialAnalysis";
-	}
 }
 
 
