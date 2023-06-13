@@ -11,5 +11,39 @@
 			seq_item.nextval, #{itemName}, #{price}, #{description}, #{pictureUrl}
 		)
 	</insert>
-
+	
+	<select id="list" resultType="item">
+		select
+			item_id, item_name, price, description, picture_url
+		from item
+		order by item_id desc
+	</select>
+	
+	<select id="read" parameterType="int" resultType="item">
+		select
+			item_id, item_name, price, description, picture_url
+		from item
+		where item_id = #{itemId}
+	</select>
+	
+	<select id="getPicture" parameterType="int" resultType="String">
+		select picture_url
+		from item
+		where item_id = #{itemId}
+	</select>
+	
+	<update id="modify" parameterType="item">
+		update item
+		set
+			item_name = #{itemName},
+			price = #{price},
+			description = #{description},
+			picture_url = #{pictureUrl}
+		where item_id = #{itemId}
+	</update>
+	
+	<delete id="remove" parameterType="int">
+		delete from item
+		where item_id = #{itemId}
+	</delete>
 </mapper>
