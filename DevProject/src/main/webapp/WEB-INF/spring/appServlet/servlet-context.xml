@@ -46,7 +46,7 @@
 	
 	</beans:bean>
 	
-	<context:component-scan base-package="kr.or.ddit" />
+	<context:component-scan base-package="kr.or.ddit.controller" />
 	
 	<resources location="/resources/" mapping="/resources/**"></resources>
 	
