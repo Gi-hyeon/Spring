@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
 	<ul class="navbar-nav">
 		<li class="nav-item"><a class="nav-link" data-widget="pushmenu"
@@ -14,6 +14,10 @@
 
 	<div class="sidebar">
 		<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+			<c:if test="${not empty member }">
+				<c:set target="${sessionScope.SessionInfo }" property="memProfileImg" value="${member.memProfileImg }"/>
+				<c:set target="${sessionScope.SessionInfo }" property="memName" value="${member.memName }"/>
+			</c:if>
 			<div class="image">
 				<img src="${sessionScope.SessionInfo.memProfileImg }" class="img-circle elevation-2" alt="User Image">
 			</div>
