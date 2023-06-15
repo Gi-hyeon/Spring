@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import kr.or.ddit.mapper.MemberMapper;
+import kr.or.ddit.vo.CustomUser;
 import kr.or.ddit.vo.MemberVO;
 
 public class CustomUserDetailsService implements UserDetailsService {
