@@ -317,6 +317,40 @@ public class SecurityController {
 	 * 		> CustomUserDetailsService 클래스 내 loadUserByUsername 메서드에서 인코딩된 비밀번호를 확인해보고 암호화된 비밀번호가 어떻게
 	 * 		    일치하여 인증이되는지를 같이 알아보자
 	 * 
+	 * 13. 스프링 시큐리티의 표현식
+	 * - 스프링 시큐리티 표현식을 이용하면 인증 및 권한 정보에 따라 화면을 동적으로 구성할 수 있고 로그인 한 사용자 정보를 보여줄 수도 있다.
+	 * 
+	 * 		공통 표현식
+	 * 		- hasRole([role])
+	 * 			> 해당 롤이 있으면 true
+	 * 		- hasAnyRole([role1, role2])
+	 * 			> 여러 롤들 중에서 하나라도 해당하는 롤이 있으면 true
+	 * 		- principal
+	 * 			> 인증된 사용자의 사용자 정보(UserDetails 인터페이스를 구현한 클래스 객체)를 의미
+	 * 		- authentication
+	 * 			> 인증된 사용자의 사용자 인증 정보 (Authentication 인터페이스를 구현한 클래스의 객체)를 의미
+	 * 		- permitAll
+	 * 			> 모든 사용자에게 허용
+	 * 		- denyAll
+	 * 			> 모든 사용자에게 거부
+	 * 		- inAnonymous()
+	 * 			> 익명의 사용자의 경우 (로그인을 하지 않은 경우도 해당)
+	 * 		- inAuthenticated()
+	 * 			> 인증된 사용자면 true
+	 * 		- isFullyAuthenticated()
+	 * 			> Remember-me로 인증된 것이 아닌 일반적인 방법으로 인증된 사용자인 경우 true
+	 * 		
+	 * 		표현식 사용
+	 * 		- 표현식을 이용하면 동적 화면 구성
+	 * 		> home.jsp를 수정한다.
+	 * 			- 표현식을 이용한 내용을 추가한다.
+	 * 
+	 * 		- 로그인 한 사용자 정보 보여주기
+	 * 			> views/board/register.jsp 수정
+	 * 			> views/notice/register.jsp	수정
+	 * 		
+	 * 
+	 * 
 	 */
 }
 
