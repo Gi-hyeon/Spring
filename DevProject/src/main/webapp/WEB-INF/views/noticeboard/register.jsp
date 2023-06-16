@@ -7,7 +7,8 @@
 		<div class="card-body">
 			<p class="login-box-msg">회원가입</p>
 			
-			<form action="/notice/signup.do" method="post" id="signupForm" enctype="multipart/form-data">
+			<!-- 파일 데이터를 넘겨줄 때에는 쿼리스트링을 이용하여 토큰값을 같이 넘겨줌  -->
+			<form action="/notice/signup.do?${_csrf.parameterName }=${_csrf.token}" method="post" id="signupForm" enctype="multipart/form-data">
 				<div class="input-group mb-3 text-center">
 					<img class="profile-user-img img-fluid img-circle" id="profileImg"
 						src="/resources/dist/img/AdminLTELogo.png" alt="User profile picture"
@@ -127,6 +128,9 @@ $(function() {
 		$.ajax({
 			type : "post",
 			url : "/notice/idCheck.do",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader('${_csrf.headerName}', '${_csrf.token}');
+			},
 			data : {memId : id},
 			success : function(res) {
 				console.log("아이디 중복환인 이벤트 결과 : " + res);
