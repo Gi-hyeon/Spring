@@ -4,6 +4,8 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,15 +29,16 @@ public class NoticeProfileController {
 	public String noticeProfile(
 			HttpServletRequest req, RedirectAttributes ra, Model model) {
 		String goPage = "";
-		HttpSession session = req.getSession();
-		DDITMemberVO sessionMember = (DDITMemberVO) session.getAttribute("SessionInfo");
+//		HttpSession session = req.getSession();
+//		DDITMemberVO sessionMember = (DDITMemberVO) session.getAttribute("SessionInfo");
 		
-		if (sessionMember == null) {
-			ra.addFlashAttribute("message", "로그인 후 이용가능합니다!");
-			return "redirect:/notice/login.do";
-		}
+//		if (sessionMember == null) {
+//			ra.addFlashAttribute("message", "로그인 후 이용가능합니다!");
+//			return "redirect:/notice/login.do";
+//		}
 		
-		DDITMemberVO member = noticeService.selectMember(sessionMember);
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		DDITMemberVO member = noticeService.selectMember(user.getUsername());
 		
 		if (member != null) {
 			model.addAttribute("member", member);
