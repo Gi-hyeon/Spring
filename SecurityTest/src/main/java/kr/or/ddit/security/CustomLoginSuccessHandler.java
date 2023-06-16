@@ -23,6 +23,8 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 		User custormUser = (User) authentication.getPrincipal();
 		
 		log.info("username : " + custormUser.getUsername());
+		
+		// password : null 로 뜨는 이유 password security 때문에 console에 찍으면 null로 확인된다.
 		log.info("password : " + custormUser.getPassword());
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
