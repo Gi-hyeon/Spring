@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -41,7 +42,7 @@ public class CrudBoardController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String crudRegister(Model model, Board board) {
+	public String crudRegister(Model model, @Validated Board board) {
 		log.info("crudRegister() 실행...!");
 		
 		try {
