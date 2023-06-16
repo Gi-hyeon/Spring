@@ -14,4 +14,8 @@ public interface LoginMapper {
 
 	public String pwForgetProcess(DDITMemberVO member);
 
+	public DDITMemberVO readByUserId(String username);
+
+	public void signupAuth(int memNo);
+
 }
