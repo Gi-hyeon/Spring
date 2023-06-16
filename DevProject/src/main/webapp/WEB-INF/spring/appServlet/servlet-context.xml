@@ -3,7 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
@@ -38,15 +40,39 @@
 	<!-- Tiles 설정 끝 -->
 	
 	<!-- 
+		인터셉터 설정
+		- LoginInterceptor 클래스를 빈으로 정의한다.
+		설정한 클래스는 해당 위치에 존재해야 한다.
+	 -->
+	<beans:bean id="loginInterceptor" class="kr.or.ddit.controller.intercept.LoginInterceptor"></beans:bean>
+	<interceptors>
+		<interceptor>
+			<mapping path="/login1"/>
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+	</interceptors>
+	<beans:bean id="accessloggingInterceptor" class="kr.or.ddit.controller.intercept.AccessLoggingInterceptor"></beans:bean>
+	<interceptors>
+		<interceptor>
+			<mapping path="/*"/>
+			<exclude-mapping path="/resources/**"/>
+			<beans:ref bean="accessloggingInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
+	<context:component-scan base-package="kr.or.ddit.controller" />
+	<context:component-scan base-package="kr.or.ddit.security" />
+	
+	<!-- 
 		서블릿 표준용 MultipartResolver 스프링 빈으로 정의
 		- StandardServletMultipartResolver 사용 시 설정
 			> Servlet 3.0의 Part를 이용한 MultipartFile 데이터 처리
 	 -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
-	
 	</beans:bean>
 	
-	<context:component-scan base-package="kr.or.ddit.controller" />
+	<security:global-method-security pre-post-annotations="enabled" secured-annotations="enabled"/>
+	
 	
 	<resources location="/resources/" mapping="/resources/**"></resources>
 	
